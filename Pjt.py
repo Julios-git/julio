@@ -19,6 +19,13 @@ if archivo_csv:
         # Mostrar las primeras filas del dataset
         st.write(data.head())
 
+        # Verificar las columnas
+        expected_columns = ['Name', 'Score', 'Role %', 'Pick %', 'Ban %', 'KDA', 'Win %']
+        for col in expected_columns:
+            if col not in data.columns:
+                st.error(f"Falta la columna esperada: {col}")
+                break
+
         # Seleccionar un campeón
         campeones = data['Name'].unique()
         campeon_seleccionado = st.selectbox("Selecciona un campeón", campeones)
@@ -28,8 +35,8 @@ if archivo_csv:
 
         if not data_campeon.empty:
             # Realizar la regresión lineal
-            X = data_campeon[['Score', 'Role %', 'Pick %', 'Ban %', 'KDA']].values
-            y = data_campeon['Win %'].values
+            X = data_campeon[['Score', 'Role %', 'Pick %', 'Ban %', 'KDA']]
+            y = data_campeon['Win %']
 
             # Ajustar modelo de regresión lineal
             model = LinearRegression()
